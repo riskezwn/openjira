@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material'
-import { red } from '@mui/material/colors'
+import { blue, red } from '@mui/material/colors'
 
 export const darkTheme = createTheme({
   palette: {
@@ -9,6 +9,13 @@ export const darkTheme = createTheme({
     }
   },
   components: {
-
+    MuiAppBar: {
+      defaultProps: {},
+      styleOverrides: {
+        root: {
+          backgroundColor: blue[700]
+        }
+      }
+    }
   }
 })
