@@ -8,7 +8,7 @@ interface Props {
   children: ReactNode
 }
 
-export const Layout: FC<Props> = ({ title = 'Open Jira', children }) => {
+export const Layout: FC<Props> = ({ title = 'OpenJira', children }) => {
   return (
     <Box sx={{
       flexGrow: 1
