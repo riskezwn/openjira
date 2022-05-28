@@ -1,28 +1,16 @@
 import React, { FC, useContext, useMemo, DragEvent } from 'react'
-import { Box, List, Theme } from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import { Paper, List } from '@mui/material'
 import { EntryStatus } from '../../interfaces'
 import { EntriesContext } from '../../context/entries'
 import { UIContext } from '../../context/ui'
 import { EntryCard } from './'
+import styles from './EntryList.module.css'
 
 interface Props {
   status: EntryStatus
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
-  dragging: {
-    backgroundColor: theme.palette.background.paper,
-    outline: 2,
-    outlineStyle: 'dashed',
-    outlineColor: theme.palette.primary.main,
-    borderRadius: 10
-  }
-}))
-
 export const EntryList: FC<Props> = ({ status }) => {
-  const classes = useStyles()
-
   const { isDragging, endDragging } = useContext(UIContext)
   const { entries, updateEntry } = useContext(EntriesContext)
 
@@ -42,30 +30,26 @@ export const EntryList: FC<Props> = ({ status }) => {
 
   return (
     <div
-      onDrop={onDropEntry}
-      onDragOver={allowDrop}
-      className={isDragging ? classes.dragging : ''}
+      onDrop={ onDropEntry }
+      onDragOver={ allowDrop }
+      className={ isDragging ? styles.dragging : '' }
     >
-      <Box sx={{
-        height: 'calc(100vh - 200px)',
+      <Paper sx={{
+        height: 'calc(100vh - 180px)',
         overflowY: 'auto',
-        overflowX: 'hidden',
         backgroundColor: 'transparent',
-        padding: 1,
-        paddingBottom: 5,
-        marginTop: 1
-      }}>
-        <List sx={{
-          opacity: isDragging ? 0.3 : 1,
-          transition: 'opacity 0.2s'
-        }}>
+        padding: '3px 5px'
+      }}
+        className={ status === 'pending' ? styles.new : '' }
+      >
+        <List sx={{ opacity: isDragging ? 0.2 : 1, transition: 'all .3s' }}>
           {
             entriesByStatus.map(entry => (
-              <EntryCard key={entry._id} entry={entry}/>
+              <EntryCard key={ entry._id } entry={ entry } />
             ))
           }
         </List>
-      </Box>
+      </Paper>
     </div>
   )
 }
