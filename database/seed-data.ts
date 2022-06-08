@@ -12,17 +12,17 @@ interface SeedData {
 export const seedData: SeedData = {
   entries: [
     {
-      description: 'completed: Aprender React',
+      description: 'Learn React',
       status: 'completed',
       createdAt: Date.now()
     },
     {
-      description: 'pending: Aprender MongoDB',
+      description: 'Learn MongoDB',
       status: 'pending',
       createdAt: Date.now() - 1000000
     },
     {
-      description: 'in-progress: Aprender NextJS',
+      description: 'Learn NextJS',
       status: 'in-progress',
       createdAt: Date.now() - 10000
     }
