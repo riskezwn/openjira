@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, useContext, useMemo, useState } from 'react'
 import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router'
 import { capitalize, Grid, Card, CardHeader, CardContent, TextField, CardActions, Button, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, IconButton } from '@mui/material'
 import SaveIcon from '@mui/icons-material/Save'
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
@@ -16,7 +17,9 @@ interface Props {
 }
 
 export const EntryPage: FC<Props> = ({ entry }) => {
-  const { updateEntry } = useContext(EntriesContext)
+  const router = useRouter()
+
+  const { updateEntry, deleteEntry } = useContext(EntriesContext)
 
   const [inputValue, setInputValue] = useState(entry.description)
   const [status, setStatus] = useState<EntryStatus>(entry.status)
@@ -42,6 +45,11 @@ export const EntryPage: FC<Props> = ({ entry }) => {
     }
 
     updateEntry(updatedEntry, true)
+  }
+
+  const onDelete = () => {
+    deleteEntry(entry)
+    router.replace('/')
   }
 
   return (
@@ -119,6 +127,7 @@ export const EntryPage: FC<Props> = ({ entry }) => {
             backgroundColor: 'error.dark'
           }
         }}
+        onClick={onDelete}
       >
         <DeleteForeverIcon />
       </IconButton>
