@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect, useReducer } from 'react'
 import { useSnackbar } from 'notistack'
 import { EntriesContext, entriesReducer } from './'
 import { Entry } from '../../interfaces'
-import { entriesApi } from '../../api'
+import { entriesApi } from '../../entriesapi'
 
 interface Props {
   children: ReactNode
