@@ -1,7 +1,9 @@
 import React, { FC, DragEvent, useContext } from 'react'
+import { useRouter } from 'next/router'
 import { Card, CardActionArea, CardActions, CardContent, Typography } from '@mui/material'
 import { Entry } from '../../interfaces'
 import { UIContext } from '../../context/ui'
+import { getDateDistanceToNow } from '../../utils'
 
 interface Props {
   entry: Entry
@@ -9,6 +11,7 @@ interface Props {
 
 export const EntryCard:FC<Props> = ({ entry }) => {
   const { startDragging, endDragging } = useContext(UIContext)
+  const router = useRouter()
 
   const onDragStart = (e: DragEvent<HTMLDivElement>) => {
     e.dataTransfer.setData('text', entry._id)
@@ -18,6 +21,10 @@ export const EntryCard:FC<Props> = ({ entry }) => {
     endDragging()
   }
 
+  const onCardClick = () => {
+    router.push(`/entries/${entry._id}`)
+  }
+
   return (
     <Card
       sx={{ marginBottom: 1 }}
@@ -25,6 +32,7 @@ export const EntryCard:FC<Props> = ({ entry }) => {
       draggable
       onDragStart={ onDragStart }
       onDragEnd={ onDragEnd }
+      onClick={onCardClick}
     >
       <CardActionArea>
         <CardContent>
@@ -33,7 +41,9 @@ export const EntryCard:FC<Props> = ({ entry }) => {
           </Typography>
         </CardContent>
         <CardActions sx={{ display: 'flex', justifyContent: 'end', paddingRight: 2 }}>
-            <Typography variant='body2'>hace 30 minutos</Typography>
+            <Typography variant='body2'>
+              {getDateDistanceToNow(entry.createdAt)} ago
+            </Typography>
         </CardActions>
       </CardActionArea>
     </Card>

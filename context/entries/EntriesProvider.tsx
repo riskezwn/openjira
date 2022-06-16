@@ -1,4 +1,5 @@
 import { FC, ReactNode, useEffect, useReducer } from 'react'
+import { useSnackbar } from 'notistack'
 import { EntriesContext, entriesReducer } from './'
 import { Entry } from '../../interfaces'
 import { entriesApi } from '../../api'
@@ -16,6 +17,8 @@ const ENTRIES_INITIAL_STATE: EntriesState = {
 }
 
 export const EntriesProvider:FC<Props> = ({ children }) => {
+  const { enqueueSnackbar } = useSnackbar()
+
   const [state, dispatch] = useReducer(entriesReducer, ENTRIES_INITIAL_STATE)
 
   const addNewEntry = async (description: string) => {
@@ -26,10 +29,21 @@ export const EntriesProvider:FC<Props> = ({ children }) => {
     })
   }
 
-  const updateEntry = async ({ _id, description, status }: Entry) => {
+  const updateEntry = async ({ _id, description, status }: Entry, showSnackbar = false) => {
     try {
       const { data } = await entriesApi.put<Entry>(`/entries/${_id}`, { description, status })
       dispatch({ type: '[Entry] update entry', payload: data })
+
+      if (showSnackbar) {
+        enqueueSnackbar('Entry updated', {
+          variant: 'success',
+          autoHideDuration: 1500,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'right'
+          }
+        })
+      }
     } catch (error) {
       console.error({ error })
     }
